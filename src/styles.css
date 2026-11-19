@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/*
+ * Paleta do projeto. Cada --color-* vira utilitários do Tailwind
+ * (bg-ink, text-ink-soft, border-rule…), então a cor fica definida num só lugar.
+ */
+@theme {
+  --color-page: #eef1f0;
+  --color-paper: #fbfcfa;
+  --color-ink: #22292d;
+  --color-ink-soft: #57636a;
+  --color-rule: #c9d2d3;
+  --color-frame: #9aa5a8;
+  --color-accent: #1c5a9c;
+  --color-danger: #a8261d;
+  --color-danger-soft: #fbe9e7;
+}
+
+/*
+ * Componentes: combinações de utilitários que se repetem no HTML estático
+ * ou nos elementos criados pelo TypeScript. Mudar a aparência de todos os
+ * campos, por exemplo, exige editar só .field-input.
+ */
+@layer components {
+  .panel-fieldset {
+    @apply mb-5 border-0 border-t-2 border-ink pt-3;
+  }
+
+  .panel-legend {
+    @apply pr-2 text-lg font-semibold;
+  }
+
+  .hint {
+    @apply mb-2 text-sm text-ink-soft;
+  }
+
+  .field-label {
+    @apply text-sm text-ink-soft;
+  }
+
+  /* Base comum a campos de texto e listas de seleção */
+  .field-input,
+  .field-select {
+    @apply w-full min-w-0 rounded-sm border border-rule bg-white px-1.5 py-1 tabular-nums;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent;
+  }
+
+  /*
+   * Estados só dos campos de texto. Ficam fora da base porque um select
+   * também casa com :read-only, e ganharia o visual de campo travado.
+   */
+  .field-input {
+    @apply read-only:border-dashed read-only:bg-transparent read-only:text-ink-soft;
+    @apply aria-[invalid=true]:border-danger aria-[invalid=true]:bg-danger-soft;
+  }
+
+  .btn {
+    @apply cursor-pointer rounded-sm border border-accent px-3 py-1;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent;
+  }
+
+  .btn-primary {
+    @apply bg-accent text-white;
+  }
+
+  .btn-secondary {
+    @apply mt-1.5 bg-transparent text-accent;
+  }
+
+  .btn-remove {
+    @apply cursor-pointer px-1.5 text-lg leading-none text-ink-soft hover:text-danger;
+  }
+
+  .entry-table {
+    @apply w-full border-collapse;
+  }
+
+  .entry-table th,
+  .entry-table td {
+    @apply p-0.5;
+  }
+
+  .entry-table thead th {
+    @apply text-right text-xs font-medium text-ink-soft;
+  }
+
+  .entry-table tbody th {
+    @apply w-10 text-left font-semibold;
+  }
+}

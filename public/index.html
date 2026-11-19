@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perspectiva cônica</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="flex h-dvh flex-col overflow-hidden bg-page font-sans text-ink">
+  <header class="flex shrink-0 items-center gap-4 border-b border-rule px-6 py-3">
+    <img src="logo-uem.png" alt="Universidade Estadual de Maringá" class="h-12 w-auto">
+    <div class="min-w-0">
+      <h1 class="text-2xl leading-tight font-bold">Perspectiva cônica</h1>
+      <p class="text-sm text-ink-soft">Computação Gráfica</p>
+    </div>
+    <p class="ml-auto text-right text-sm text-ink-soft">
+      <span class="block font-semibold text-ink">Lucas Alves</span>
+      UEM, Departamento de Informática
+    </p>
+  </header>
+
+  <div class="grid min-h-0 flex-1 grid-rows-[minmax(0,45fr)_minmax(0,55fr)] gap-4 px-6 pt-4 pb-6 lg:grid-cols-[22rem_minmax(0,1fr)] lg:grid-rows-1 lg:gap-8">
+    <section id="inputs" aria-label="Dados de entrada" class="min-h-0 overflow-y-auto overscroll-contain pr-3">
+      <div class="mb-6 flex gap-2">
+        <select id="preset" class="field-select" aria-label="Exemplo"></select>
+        <button type="button" id="load-preset" class="btn btn-primary">Carregar</button>
+      </div>
+
+      <fieldset class="panel-fieldset">
+        <legend class="panel-legend">Ponto de vista C</legend>
+        <div id="viewpoint-fields" class="grid grid-cols-3 gap-2"></div>
+      </fieldset>
+
+      <fieldset class="panel-fieldset">
+        <legend class="panel-legend">Plano de projeção</legend>
+        <p class="hint">Três pontos distintos e não colineares do plano.</p>
+        <table class="entry-table">
+          <thead><tr><th></th><th>X</th><th>Y</th><th>Z</th></tr></thead>
+          <tbody id="plane-rows"></tbody>
+        </table>
+
+        <label for="reference-choice" class="field-label mt-4 mb-1 block">Ponto R0 sobre o plano</label>
+        <select id="reference-choice" class="field-select">
+          <option value="p1">Igual a P1</option>
+          <option value="p2">Igual a P2</option>
+          <option value="p3">Igual a P3</option>
+          <option value="custom">Outro ponto</option>
+        </select>
+        <table class="entry-table mt-1">
+          <tbody id="reference-rows"></tbody>
+        </table>
+      </fieldset>
+
+      <fieldset class="panel-fieldset">
+        <legend class="panel-legend">Objeto</legend>
+
+        <p class="mt-1 mb-1 font-semibold">Vértices <span id="vertex-count" class="font-normal text-ink-soft"></span></p>
+        <table class="entry-table">
+          <thead><tr><th></th><th>X</th><th>Y</th><th>Z</th><th class="w-8"></th></tr></thead>
+          <tbody id="vertex-rows"></tbody>
+        </table>
+        <button type="button" id="add-vertex" class="btn btn-secondary">Adicionar vértice</button>
+
+        <p class="mt-4 mb-1 font-semibold">Superfícies <span id="surface-count" class="font-normal text-ink-soft"></span></p>
+        <p class="hint">Números dos vértices em sentido anti-horário visto de fora (regra da mão direita).</p>
+        <table class="entry-table">
+          <thead><tr><th></th><th class="text-left">Vértices</th><th class="w-11 text-center">NVPS</th><th class="w-8"></th></tr></thead>
+          <tbody id="surface-rows"></tbody>
+        </table>
+        <button type="button" id="add-surface" class="btn btn-secondary">Adicionar superfície</button>
+      </fieldset>
+
+      <fieldset class="panel-fieldset">
+        <legend class="panel-legend">Exibição</legend>
+        <label class="mb-2 flex items-center gap-2">
+          <input type="checkbox" id="hide-back-faces" class="size-4 accent-accent">
+          Ocultar faces traseiras em vez de tracejá-las
+        </label>
+        <label class="flex items-center gap-2">
+          <input type="checkbox" id="show-labels" class="size-4 accent-accent" checked>
+          Mostrar os nomes dos vértices
+        </label>
+      </fieldset>
+    </section>
+
+    <section aria-label="Projeção" class="order-first flex min-h-0 min-w-0 flex-col lg:order-last">
+      <div id="canvas-frame" class="relative min-h-0 flex-1">
+        <canvas
+          id="view"
+          tabindex="0"
+          class="absolute inset-0 block size-full cursor-grab touch-none border border-frame focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent data-dragging:cursor-grabbing"
+          role="img"
+          aria-label="Projeção perspectiva do objeto. Use as setas do teclado para girar."
+        ></canvas>
+      </div>
+      <div class="mt-2 flex shrink-0 flex-wrap items-center justify-between gap-3">
+        <p id="rotation-info" class="text-sm text-ink-soft" aria-live="polite"></p>
+        <button type="button" id="reset-rotation" class="btn btn-secondary mt-0 disabled:cursor-default disabled:opacity-40">Restaurar posição</button>
+      </div>
+      <div id="status" class="mt-3 max-h-32 shrink-0 overflow-y-auto empty:hidden" role="status" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
